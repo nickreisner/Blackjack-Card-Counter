@@ -6,15 +6,6 @@ This project presents a computer vision-based system for detecting and analyzing
 
 A computer vision-based blackjack card detection system that analyzes playing card images to provide optimal strategy recommendations and card counting information. The approach relies on edge detection, contour approximation, and template matching to recognize individual cards accurately, then overlays game information onto a visual heads-up display (HUD), providing real-time strategy recommendations and betting advice.
 
-## Rules
-This project assumes the following rules:
-- 3:2 blackjack payout
-- Double after split allowed
-- Dealer hits on soft 17
-- No late surrender
-- Double on any two cards
-- 4-8 decks
-
 ## Features
 
 - **Image Preprocessing**: Converts input images to grayscale for reduced visual complexity
@@ -210,11 +201,14 @@ Based on testing with real-world images:
 - **Rank Recognition**: Accurate template matching with minimal false positives
 - **Strategy Recommendation**: Consistent strategic guidance with proper game state assessment
 
-## Limitations
-
-- **General Robustness**: Performance may degrade with overlapping cards, glare, or busy table patterns
-- **Point-of-View**: Optimized for bird's-eye view; angled perspectives may reduce rank recognition accuracy
-- **Game Scenarios**: Limited support for complex scenarios like card splitting
+## Blackjack Rule Assumptions
+This project assumes the following rules:
+- 3:2 blackjack payout
+- Double after split allowed
+- Dealer hits on soft 17
+- No late surrender
+- Double on any two cards
+- 4-8 decks
 
 ## Notes
 
