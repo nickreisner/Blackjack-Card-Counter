@@ -1,10 +1,10 @@
-# Blackjack Basic Strategy with Player Card Detection
+# Blackjack Master: Blackjack Card Counting with Classical Computer Vision Techniques
 
-This script converts the Jupyter notebook functionality into a command-line tool that can detect and identify playing cards from images using computer vision techniques, and provides blackjack strategy recommendations.
+This project presents a computer vision-based system for detecting and analyzing blackjack hands from real-world images. Using a combination of classical computer vision techniques, the system identifies playing cards, determines the optimal move based on blackjack basic strategy, and maintains a running card count using the Hi-Lo method.
 
 ## Description
 
-A computer vision-based blackjack card detection system that analyzes playing card images to provide optimal strategy recommendations and card counting information.
+A computer vision-based blackjack card detection system that analyzes playing card images to provide optimal strategy recommendations and card counting information. The approach relies on edge detection, contour approximation, and template matching to recognize individual cards accurately, then overlays game information onto a visual heads-up display (HUD), providing real-time strategy recommendations and betting advice.
 
 ## Rules
 This project assumes the following rules:
@@ -17,13 +17,13 @@ This project assumes the following rules:
 
 ## Features
 
-- **Edge Detection**: Uses Canny edge detection to find card boundaries
-- **Card Detection**: Identifies parallelogram-shaped contours that represent cards
-- **Card Extraction**: Extracts individual cards from the image
-- **Template Matching**: Matches extracted cards against predefined templates
-- **Blackjack Analysis**: Provides player vs dealer card analysis and strategy recommendations
-- **Card Counting**: Tracks running count and true count for betting suggestions
-- **Multiple Output Options**: Various plotting options to visualize different stages of the process
+- **Image Preprocessing**: Converts input images to grayscale for reduced visual complexity
+- **Card Detection**: Uses Canny edge detection and contour approximation to identify parallelogram-shaped cards
+- **Rank Recognition**: Extracts and matches card ranks using template matching against predefined templates
+- **Strategy Recommendation**: Provides player vs dealer card analysis and optimal move recommendations
+- **Card Counting**: Implements Hi-Lo system to track running count and true count for betting suggestions
+- **Heads-Up Display**: Visual overlay showing game analysis on the original image
+- **Multiple Output Options**: Various plotting options to visualize different stages of the detection pipeline
 
 ## Requirements
 
@@ -62,11 +62,12 @@ Interactive mode allows you to:
 - Process images with different flags
 
 By default, the script will:
-- Detect and identify all cards in the image
+- Detect and identify all cards in the image using the card detection pipeline
+- Extract rank information through the rank recognition process
 - Analyze the blackjack hand (dealer vs player cards)
 - Provide strategy recommendations (Hit, Stand, Double, Split)
-- Show card counting information
-- Display a HUD with the analysis
+- Show card counting information using the Hi-Lo system
+- Display a heads-up display (HUD) with the analysis
 
 ### Command Line Options
 
@@ -75,14 +76,14 @@ By default, the script will:
 - `--running-count`: Current running count (default: 0)
 - `--num-decks`: Number of decks in play (default: 1)
 - `--show-original`: Show the original input image
-- `--show-edges`: Show the detected edges
+- `--show-edges`: Show the detected edges from Canny edge detection
 - `--show-contours`: Show all detected contours
 - `--show-corners`: Show detected parallelogram corners
 - `--show-cards`: Show extracted individual cards
-- `--show-matches`: Show card matching results
+- `--show-matches`: Show card matching results from template matching
 - `--save-plots`: Save plots to files instead of displaying
 - `--output-dir`: Directory to save plots (default: 'output')
-- `--min-score`: Minimum matching score threshold (default: 0.5)
+- `--min-score`: Minimum matching score threshold for template matching (default: 0.5)
 - `--min-area`: Minimum contour area for card detection (default: 4000)
 
 ### Interactive Mode Commands
@@ -92,8 +93,8 @@ When in interactive mode, you can use these commands:
 - `<image_path> [flags]` - Process an image with optional flags
   - `--is-end` - Indicate end of hand
   - `--show-plots` - Show HUD visualization
-  - `--min-score=<value>` - Set minimum matching score
-  - `--min-area=<value>` - Set minimum contour area
+  - `--min-score=<value>` - Set minimum matching score for template matching
+  - `--min-area=<value>` - Set minimum contour area for card detection
 - `count` - Show current running count and betting suggestion
 - `reset` - Reset running count to 0
 - `decks <number>` - Set number of decks in play
@@ -129,22 +130,22 @@ python blackjack_detector.py hands/deck1_hand7_end.jpg --is-end
 python blackjack_detector.py hands/deck1_hand7_start.jpg --running-count 5 --num-decks 6
 ```
 
-4. **Show all visualizations interactively:**
+5. **Show all visualizations interactively:**
 ```bash
 python blackjack_detector.py hands/deck1_hand7_start.jpg --show-original --show-edges --show-contours --show-corners --show-cards --show-matches
 ```
 
-5. **Save all plots to a directory:**
+6. **Save all plots to a directory:**
 ```bash
 python blackjack_detector.py hands/deck1_hand7_start.jpg --show-original --show-edges --show-contours --show-corners --show-cards --show-matches --save-plots --output-dir my_results
 ```
 
-6. **Only show card matching results:**
+7. **Only show card matching results:**
 ```bash
 python blackjack_detector.py hands/deck1_hand7_start.jpg --show-matches
 ```
 
-7. **Adjust detection parameters:**
+8. **Adjust detection parameters:**
 ```bash
 python blackjack_detector.py hands/deck1_hand7_start.jpg --min-score 0.7 --min-area 5000
 ```
@@ -153,7 +154,7 @@ python blackjack_detector.py hands/deck1_hand7_start.jpg --min-score 0.7 --min-a
 
 The script provides:
 - **Console output**: Blackjack hand analysis including dealer/player cards, strategy recommendations, and card counting information
-- **HUD display**: Visual overlay showing the analysis on the original image
+- **Heads-up display**: Visual overlay showing the analysis on the original image
 - **Interactive plots**: If `--save-plots` is not used, plots are displayed interactively
 - **Saved images**: If `--save-plots` is used, plots are saved as PNG files
 
@@ -175,9 +176,9 @@ Successfully matched cards: 3
 
 ### Generated Files (when using --save-plots)
 
-- `hud_analysis.png`: HUD overlay with game analysis
+- `hud_analysis.png`: Heads-up display overlay with game analysis
 - `original_image.png`: The input image
-- `detected_edges.png`: Edge detection results
+- `detected_edges.png`: Edge detection results from Canny edge detection
 - `all_contours.png`: All detected contours
 - `parallelogram_corners.png`: Detected card corners
 - `card_1.png`, `card_2.png`, etc.: Individual extracted cards
@@ -189,26 +190,38 @@ The script expects template images in the `extracted_numbers/` directory:
 - Two.png, Three.png, Four.png, Five.png, Six.png, Seven.png, Eight.png, Nine.png, Ten.png
 - Jack.png, Queen.png, King.png, Ace.png
 
-These templates are used for card identification through template matching.
+These templates are used for rank recognition through template matching.
 
 ## Algorithm Overview
 
-1. **Preprocessing**: Convert image to grayscale and apply thresholding
-2. **Edge Detection**: Use Canny edge detection to find card boundaries
-3. **Contour Detection**: Find all contours in the edge image
-4. **Card Filtering**: Filter contours to find parallelogram-shaped cards
-5. **Card Extraction**: Extract individual cards using perspective transformation
-6. **Template Matching**: Match extracted cards against predefined templates
-7. **Blackjack Analysis**: Analyze dealer vs player hands and provide strategy recommendations
-8. **Card Counting**: Track running count and calculate true count for betting suggestions
-9. **Result Display**: Show HUD and console output with game analysis
+The system employs a multi-stage pipeline:
+
+1. **Image Preprocessing**: Convert image to grayscale for reduced visual complexity
+2. **Card Detection**: Use Canny edge detection to find card boundaries, then apply contour approximation to identify parallelogram-shaped cards
+3. **Rank Recognition**: Extract the top-left corner of each card, apply binary thresholding, isolate the rank character, and match against predefined templates
+4. **Strategy Recommendation**: Analyze dealer vs player hands and provide optimal move recommendations using basic blackjack strategy
+5. **Card Counting**: Track running count using the Hi-Lo system and calculate true count for betting suggestions
+6. **Result Display**: Show heads-up display and console output with game analysis
+
+## Performance
+
+Based on testing with real-world images:
+- **Card Detection**: High precision and recall on both development and test sets
+- **Rank Recognition**: Accurate template matching with minimal false positives
+- **Strategy Recommendation**: Consistent strategic guidance with proper game state assessment
+
+## Limitations
+
+- **General Robustness**: Performance may degrade with overlapping cards, glare, or busy table patterns
+- **Point-of-View**: Optimized for bird's-eye view; angled perspectives may reduce rank recognition accuracy
+- **Game Scenarios**: Limited support for complex scenarios like card splitting
 
 ## Notes
 
 - The script works best with clear, well-lit images of playing cards
 - Cards should be roughly parallelogram-shaped (allowing for perspective distortion)
 - The minimum area parameter can be adjusted based on image resolution and card size
-- The minimum score parameter controls the confidence threshold for card matching
+- The minimum score parameter controls the confidence threshold for template matching
 - Use `--is-end` flag when analyzing images where all cards are visible (end of hand)
 - The script automatically distinguishes between dealer and player cards based on position
 - Strategy recommendations follow basic blackjack strategy rules
