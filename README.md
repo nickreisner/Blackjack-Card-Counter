@@ -2,7 +2,7 @@
 
 This project presents a computer vision-based system for detecting and analyzing blackjack hands from real-world images. Using a combination of classical computer vision techniques, the system identifies playing cards, determines the optimal move based on blackjack basic strategy, and maintains a running card count using the Hi-Lo method.
 
-## Description
+## Overview
 
 A computer vision-based blackjack card detection system that analyzes playing card images to provide optimal strategy recommendations and card counting information. The approach relies on edge detection, contour approximation, and template matching to recognize individual cards accurately, then overlays game information onto a visual heads-up display (HUD), providing real-time strategy recommendations and betting advice.
 
